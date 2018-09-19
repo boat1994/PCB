@@ -9,7 +9,7 @@ import { translate } from 'react-i18next'
 
 const NotFoundPage = () => {return<h1>404</h1>}
 
-const AppWithRouter = ( {t} ) => (
+const AppWithRouter = ({t}) => (
 
 <BrowserRouter>
   <div className="App">
