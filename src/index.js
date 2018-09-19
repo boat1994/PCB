@@ -10,11 +10,9 @@ const NotFoundPage = () => {return<h1>404</h1>}
 const AppWithRouter = () => (
 
 <BrowserRouter>
-  <div>
-
+  <div className="App">
     <Header/>
-
-    <div className="App container">
+    <div className="container">
       <Switch>
         <Route exact path='/' component={Home} />
         <Route exact path='/quote' component={Quote} />
@@ -24,7 +22,6 @@ const AppWithRouter = () => (
 
   </div>
 </BrowserRouter>
-
 )
 
 ReactDOM.render(<AppWithRouter/>, document.getElementById('root'));
