@@ -10,6 +10,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import '../style/header.css';
+import { translate } from 'react-i18next'
 
 class Header extends React.Component {
 
@@ -55,7 +56,17 @@ class Header extends React.Component {
       return <MenuItem onClick={this.handleShow}>Login</MenuItem>;
     }
   }
-  render() {
+  render(){
+    const { t, i18n } = this.props;
+
+    const switchingLanguage = () => {
+      console.log(i18n.language)
+  if (i18n.language === "en") {
+    i18n.changeLanguage("th");
+  } else {
+    i18n.changeLanguage("en");
+  }
+};
 
     return (<Navbar inverse collapseOnSelect>
       <Navbar.Header>
@@ -68,9 +79,9 @@ class Header extends React.Component {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-            <NavItem componentClass={Link} href="/" to="/"  active={window.location.pathname ==='/'} >Home</NavItem>
-            <NavItem componentClass={Link} href="/quote" to="/quote" active={window.location.pathname === '/quote'} >Quote</NavItem>
-
+            <NavItem componentClass={Link} href="/" to="/"  active={window.location.pathname ==='/'} >{t('Home')}</NavItem>
+            <NavItem componentClass={Link} href="/quote" to="/quote" active={window.location.pathname === '/quote'} >{t('Quote')}</NavItem>
+<a onClick={() => switchingLanguage("en")}>{'t("label.enth")'}</a>
         </Nav>
 
         <Nav pullRight>
@@ -93,4 +104,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default translate()(Header);
