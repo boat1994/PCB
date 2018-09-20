@@ -1,6 +1,9 @@
 import React from 'react';
 import {Carousel} from 'react-bootstrap';
 import axios from 'axios';
+import { connect } from 'react-redux'
+import { setLocale } from 'react-redux-i18n'
+const locale = require('react-redux-i18n').I18n
 
 class Slider extends React.Component {
 
@@ -54,11 +57,18 @@ class Slider extends React.Component {
       </Carousel.Caption>
     </Carousel.Item>);
 
-    return <Carousel>
-      {listItems}
-    </Carousel>
+    return <h1>{locale.t('welcome')}</h1>;
+
+    // return <Carousel>
+    //   {listItems}
+    // </Carousel>
   }
 
 };
 
-export default Slider;
+const mapStateToProps = state => ({
+  l: state.i18n.locale,
+})
+
+
+export default connect(mapStateToProps)(Slider);

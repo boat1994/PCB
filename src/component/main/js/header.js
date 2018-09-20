@@ -9,8 +9,10 @@ import {
   MenuItem,
   Button,
 } from 'react-bootstrap';
+import { connect } from 'react-redux'
+import { setLocale } from 'react-redux-i18n'
 import '../style/header.css';
-import { translate } from 'react-i18next'
+const locale = require('react-redux-i18n').I18n
 
 class Header extends React.Component {
 
@@ -56,17 +58,14 @@ class Header extends React.Component {
       return <MenuItem onClick={this.handleShow}>Login</MenuItem>;
     }
   }
-  render(){
-    const { t, i18n } = this.props;
 
-    const switchingLanguage = () => {
-      console.log(i18n)
-  if (i18n.language === "en") {
-    i18n.changeLanguage("th");
-  } else {
-    i18n.changeLanguage("en");
+  handleChangLanguage = (l) => {
+    if (this.props.l !== l) {
+      this.props.setLang(l)
+    }
   }
-};
+
+  render(){
 
     return (<Navbar inverse collapseOnSelect>
       <Navbar.Header>
@@ -79,13 +78,22 @@ class Header extends React.Component {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-            <NavItem componentClass={Link} href="/" to="/"  active={window.location.pathname ==='/'} >{t('Home')}</NavItem>
-            <NavItem componentClass={Link} href="/quote" to="/quote" active={window.location.pathname === '/quote'} >{t('Quote')}</NavItem>
-<a onClick={() => switchingLanguage("en")}>{'t("label.enth")'}</a>
+            <NavItem componentClass={Link} href="/" to="/"  active={window.location.pathname ==='/'} >{locale.t('Home')}</NavItem>
+            <NavItem componentClass={Link} href="/quote" to="/quote" active={window.location.pathname === '/quote'} >{locale.t('Quote')}</NavItem>
         </Nav>
 
         <Nav pullRight>
-          <NavDropdown id='dropdown-menu' onClick={this.checkLogin.bind(this)} title='menu'>
+          <div className="MenuHeader">
+            <a href="#"onClick={() => this.handleChangLanguage('en')}>
+              <span className="lableLang">EN</span>
+            </a>
+            |
+            <a href="#" onClick={() => this.handleChangLanguage('th')}>
+              <span className="lableLang">ไทย</span>
+            </a>
+          </div>
+
+          <NavDropdown id='dropdown-menu' onClick={this.checkLogin.bind(this)} title={locale.t('Menu')}>
             {this.renderDropdwon()}
           </NavDropdown>
         </Nav>
@@ -104,4 +112,16 @@ class Header extends React.Component {
   }
 }
 
-export default translate()(Header);
+
+const mapStateToProps = state => ({
+  l: state.i18n.locale,
+})
+
+const mapDispatchToProps = dispatch => ({
+  setLang: (l) => {
+    console.log(l);
+    dispatch(setLocale(l))
+  },
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
