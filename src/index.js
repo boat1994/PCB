@@ -8,13 +8,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { loadTranslations, setLocale, syncTranslationWithStore, i18nReducer } from 'react-redux-i18n';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
+import rootReducer from './reducers'
 const th = require('./locale/th')
 const en = require('./locale/en')
 
 const store =  createStore(
-  combineReducers({
-    i18n: i18nReducer
-  }),
+  rootReducer,
   applyMiddleware(thunk)
 );
 
@@ -26,6 +25,8 @@ store.dispatch(setLocale('th'));
 const NotFoundPage = () => {return<h1>404</h1>}
 
 const AppWithRouter = ({store}) => (
+
+
   <Provider store={store}>
     <BrowserRouter>
       <div className="App">
@@ -41,5 +42,6 @@ const AppWithRouter = ({store}) => (
     </BrowserRouter>
   </Provider>
 )
+
 
 ReactDOM.render(<AppWithRouter store={store} />, document.getElementById('root'));

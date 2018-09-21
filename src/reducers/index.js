@@ -1,48 +1,21 @@
+import * as ActionTypes from '../actions'
+import merge from 'lodash/merge'
+import todoApp from './todos'
 import { combineReducers } from 'redux'
-import {
-  ADD_TODO,
-  TOGGLE_TODO,
-  SET_VISIBILITY_FILTER,
-  VisibilityFilters
-} from '../actions/actions'
-const { SHOW_ALL } = VisibilityFilters
-
-function visibilityFilter(state = SHOW_ALL, action) {
-  switch (action.type) {
-    case SET_VISIBILITY_FILTER:
-      return action.filter
-    default:
-      return state
+import { loadTranslations, setLocale, syncTranslationWithStore, i18nReducer } from 'react-redux-i18n';
+// Updates an entity cache in response to any action with response.entities.
+const entities = (state = { users: {}, repos: {} }, action) => {
+  if (action.response && action.response.entities) {
+    return merge({}, state, action.response.entities)
   }
+
+  return state
 }
 
-function todos(state = [], action) {
-  switch (action.type) {
-    case ADD_TODO:
-      return [
-        ...state,
-        {
-          text: action.text,
-          completed: false
-        }
-      ]
-    case TOGGLE_TODO:
-      return state.map((todo, index) => {
-        if (index === action.index) {
-          return Object.assign({}, todo, {
-            completed: !todo.completed
-          })
-        }
-        return todo
-      })
-    default:
-      return state
-  }
-}
-
-const todoApp = combineReducers({
-  visibilityFilter,
-  todos
+const rootReducer = combineReducers({
+  entities,
+  todoApp,
+  i18n: i18nReducer
 })
 
-export default todoApp
+export default rootReducer
